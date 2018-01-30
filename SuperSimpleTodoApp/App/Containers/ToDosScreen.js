@@ -8,11 +8,15 @@ import styles from './Styles/ToDosScreenStyle'
 import ToDoItem from '../Components/ToDoItem'
 
 class ToDosScreen extends Component {
+  componentDidMount() {
+    this.props.getTodos()
+  }
+
   render () {
     const { todos, toggleTodo } = this.props
     return (
       <View style={styles.mainContainer}>
-        <Header />
+        <Header title={'ToDos'} onRigthPress={() => { this.props.navigation.navigate('AddToDos') }} />
         <FlatList
           keyExtractor={(item, index) => index}
           renderItem={({ item, index }) => (
@@ -36,8 +40,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     toggleTodo: (index) =>
-      dispatch({ type: 'TOGGLE_TODO', index })
+      dispatch({ type: 'TOGGLE_TODO', index }),
+    getTodos: () =>
+      dispatch({ type: 'TODOS_REQUEST' })
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(ToDosScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ToDosScreen)
